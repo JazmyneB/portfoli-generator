@@ -132,16 +132,21 @@ const promptProject = portfolioData => {
     })
   };
 
-promptUser()
-  //.then(answers => console.log(answers))
+  promptUser()
   .then(promptProject)
-  //.then(projectAnswers => console.log(projectAnswers)
-  .then(portfolioData =>{
-      //console.log(portfolioData);
-      const pageHTML = generatePage(portfolioData); 
-        fs.writeFile('./index.html', pageHTML, err => {
-        if (err) throw (err);
-  
-        console.log('Portfolio complete! Check out index.html to see the output!');
-   });
+  .then(portfolioData => {
+    return generatePage(portfolioData);
+  })
+  .then(pageHTML => {
+    return writeFile(pageHTML);
+  })
+  .then(writeFileResponse => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+  .then(copyFileResponse => {
+    console.log(copyFileResponse);
+  })
+  .catch(err => {
+    console.log(err);
   });
